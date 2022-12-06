@@ -1,0 +1,59 @@
+{
+  "name": "gelato-safe-module",
+  "version": "0.0.1",
+  "description": "Gelato Safe Module to automate Safe transactions",
+  "scripts": {
+    "build": "yarn compile --force && npx tsc",
+    "compile": "npx hardhat compile",
+    "verify": "npx hardhat etherscan-verify",
+    "test": "npx hardhat test",
+    "format": "prettier --write '*/**/*.{js,sol,json,md,ts}'",
+    "format:check": "prettier --check '*/**/*.{js,sol,json,md,ts}'",
+    "lint": "eslint --cache . && yarn lint:sol",
+    "lint:ts": "eslint -c .eslintrc.json --ext \"**/*.ts\" \"**/*.test.ts\"",
+    "lint:sol": "solhint 'contracts/**/*.sol'",
+    "postinstall": "yarn husky install"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "@openzeppelin/contracts": "^4.5.0",
+    "@openzeppelin/contracts-upgradeable": "^4.4.2",
+    "@tsconfig/recommended": "1.0.1",
+    "@typechain/ethers-v5": "9.0.0",
+    "@typechain/hardhat": "4.0.0",
+    "@types/chai": "4.3.0",
+    "@types/mocha": "9.1.0",
+    "@types/node": "17.0.21",
+    "@typescript-eslint/eslint-plugin": "5.13.0",
+    "@typescript-eslint/parser": "5.13.0",
+    "chai": "^4.3.6",
+    "dotenv": "^16.0.0",
+    "eslint": "8.10.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.5.4",
+    "hardhat": "^2.12.3",
+    "hardhat-deploy": "^0.10.5",
+    "hardhat-gas-reporter": "^1.0.8",
+    "husky": "7.0.4",
+    "lint-staged": "12.3.5",
+    "prettier": "2.5.1",
+    "prettier-plugin-solidity": "1.0.0-beta.19",
+    "solhint": "3.3.7",
+    "solhint-plugin-prettier": "0.0.5",
+    "ts-generator": "0.1.1",
+    "ts-node": "10.7.0",
+    "typechain": "7.0.0",
+    "typescript": "4.6.2"
+  },
+  "lint-staged": {
+    "*.*{js,json,md,ts,yml,yaml}": "prettier --write",
+    "*.*{ts,js}": "eslint -c .eslintrc.json"
+  },
+  "dependencies": {
+    "@gelatonetwork/ops-sdk": "^2.0.3"
+  }
+}
