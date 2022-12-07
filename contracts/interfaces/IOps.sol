@@ -12,7 +12,7 @@ interface IOps {
     struct ModuleData {
         Module[] modules;
         bytes[] args;
-    }   
+    }
 
     function createTask(
         address execAddress,
