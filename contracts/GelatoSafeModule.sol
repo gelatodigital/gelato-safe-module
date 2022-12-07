@@ -2,10 +2,10 @@
 pragma solidity ^0.8.12;
 
 import "./GelatoBytes.sol";
-import "./Types.sol";
+import {IOps} from "./interfaces/IOps.sol";
+import {IOpsProxyFactory} from "./interfaces/IOpsProxyFactory.sol";
 import {ISafe} from "./interfaces/ISafe.sol";
 import {IMultiSend} from "./interfaces/IMultiSend.sol";
-import "hardhat/console.sol";
 
 contract GelatoSafeModule {
     using GelatoBytes for bytes;
@@ -56,7 +56,6 @@ contract GelatoSafeModule {
 
         Tx memory execTx = getExecTx(_txs);
 
-        console.logBytes(execTx.data);
         (bool success, bytes memory returnData) = ISafe(_safe).execTransactionFromModuleReturnData(
             execTx.to,
             execTx.value,

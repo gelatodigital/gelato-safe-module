@@ -5,7 +5,7 @@ import hre = require("hardhat");
 // import { buildSafeTransaction, executeTx, safeApproveHash } from "../src/utils";
 const { ethers, deployments } = hre;
 import { CounterTest, GelatoSafeModule, ITaskTreasuryUpgradable, TestAvatar, IOps } from "../typechain";
-import { encodeTimeArgs, fastForwardTime, getTaskId, getTimeStampNow, Module, ModuleData } from "./utils";
+import { encodeTimeArgs, fastForwardTime, getTimeStampNow, Module } from "./utils";
 
 // const SAFE_PROXY_FACTORY_ADDRESS = "0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2";
 // const SAFE_IMPLEMENTATION_ADDRESS = "0xd9Db270c1B5E3Bd161E8c8503c55cEABeE709552";
@@ -19,12 +19,6 @@ const FEE = ethers.utils.parseEther("0.1");
 const INTERVAL = 7 * 60;
 const CALL = 0;
 const DELEGATECALL = 1;
-interface Tx {
-  to: string;
-  data: string;
-  value: number;
-  operation: number;
-}
 
 describe("GelatoSafeModule tests", function () {
   this.timeout(0);

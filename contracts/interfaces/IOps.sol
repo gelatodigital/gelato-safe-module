@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.12;
 
-enum Module {
-    RESOLVER,
-    TIME,
-    PROXY,
-    SINGLE_EXEC
-}
-
-struct ModuleData {
-    Module[] modules;
-    bytes[] args;
-}
-
 interface IOps {
+    enum Module {
+        RESOLVER,
+        TIME,
+        PROXY,
+        SINGLE_EXEC
+    }
+
+    struct ModuleData {
+        Module[] modules;
+        bytes[] args;
+    }   
+
     function createTask(
         address execAddress,
         bytes calldata execDataOrSelector,
@@ -27,7 +27,7 @@ interface IOps {
 
     function gelato() external view returns (address payable);
 
-    function taskTreasury() external view returns (ITaskTreasuryUpgradable);
+    function taskTreasury() external view returns (address);
 
     function getTaskIdsByUser(address _taskCreator) external view returns (bytes32[] memory);
 
@@ -53,22 +53,4 @@ interface IOps {
         bool useTaskTreasuryFunds,
         bool revertOnFailure
     ) external;
-}
-
-interface ITaskTreasuryUpgradable {
-    function depositFunds(
-        address receiver,
-        address token,
-        uint256 amount
-    ) external payable;
-
-    function withdrawFunds(
-        address payable receiver,
-        address token,
-        uint256 amount
-    ) external;
-}
-
-interface IOpsProxyFactory {
-    function getProxyOf(address account) external view returns (address, bool);
 }

@@ -8,7 +8,8 @@ contract CounterTest {
 
     // solhint-disable not-rely-on-time
     function increaseCount(uint256 amount) external {
-        require(((block.timestamp - lastExecuted) > 180), "Counter: increaseCount: Time not elapsed");
+        // @dev commented out to test multisend
+        // require(((block.timestamp - lastExecuted) > 180), "Counter: increaseCount: Time not elapsed");
 
         count += amount;
         lastExecuted = block.timestamp;

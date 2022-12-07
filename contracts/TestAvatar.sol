@@ -8,6 +8,8 @@ contract Enum {
     }
 }
 
+// @note Contract mimicing the Gnosis Safe without the multisig part. 
+// Shout out to Zodiac
 contract TestAvatar {
     address public module;
 
