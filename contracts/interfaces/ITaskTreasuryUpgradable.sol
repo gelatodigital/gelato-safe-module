@@ -13,4 +13,6 @@ interface ITaskTreasuryUpgradable {
         address token,
         uint256 amount
     ) external;
+
+    function totalUserTokenBalance(address user, address token) external view returns (uint256);
 }
