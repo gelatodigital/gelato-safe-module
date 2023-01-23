@@ -2,6 +2,7 @@
 import { Signer } from "@ethersproject/abstract-signer";
 import { expect } from "chai";
 import hre = require("hardhat");
+import { getAutomateAddress, getGelatoAddress, getTreasuryAddress } from "../hardhat/config/addresses";
 // import { buildSafeTransaction, executeTx, safeApproveHash } from "../src/utils";
 const { ethers, deployments } = hre;
 import { CounterTest, GelatoSafeModule, ITaskTreasuryUpgradable, TestAvatar, IOps } from "../typechain";
@@ -10,9 +11,9 @@ import { encodeTimeArgs, fastForwardTime, getTimeStampNow, Module } from "./util
 // const SAFE_PROXY_FACTORY_ADDRESS = "0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2";
 // const SAFE_IMPLEMENTATION_ADDRESS = "0xd9Db270c1B5E3Bd161E8c8503c55cEABeE709552";
 // const SALT = ethers.BigNumber.from("42069");
-const TASK_TREASURY_ADDRESS = "0x2807B4aE232b624023f87d0e237A3B1bf200Fd99";
-const GELATO = "0x3caca7b48d0573d793d3b0279b5f0029180e83b6";
-const GELATO_AUTOMATE = "0xB3f5503f93d5Ef84b06993a1975B9D21B962892F";
+const TASK_TREASURY_ADDRESS = getTreasuryAddress("hardhat");
+const GELATO_ADDRESS = getGelatoAddress("hardhat");
+const AUTOMATE_ADDRESS = getAutomateAddress("hardhat");
 const ETH = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 const ZERO_ADD = ethers.constants.AddressZero;
 const FEE = ethers.utils.parseEther("0.1");
@@ -44,7 +45,11 @@ describe("GelatoSafeModule tests", function () {
     counter = await ethers.getContract("CounterTest");
     gelatoSafeModule = await ethers.getContract("GelatoSafeModule");
     avatar = await ethers.getContract("TestAvatar", user);
-    taskTreasury = await ethers.getContractAt("ITaskTreasuryUpgradable", TASK_TREASURY_ADDRESS);
+    automate = await ethers.getContractAt("contracts/interfaces/IOps.sol:IOps", AUTOMATE_ADDRESS);
+    taskTreasury = await ethers.getContractAt(
+      "contracts/interfaces/ITaskTreasuryUpgradable.sol:ITaskTreasuryUpgradable",
+      TASK_TREASURY_ADDRESS
+    );
 
     await avatar.enableModule(gelatoSafeModule.address);
 
@@ -53,22 +58,20 @@ describe("GelatoSafeModule tests", function () {
 
     await hre.network.provider.request({
       method: "hardhat_impersonateAccount",
-      params: [GELATO],
+      params: [GELATO_ADDRESS],
     });
-    executor = ethers.provider.getSigner(GELATO);
+    executor = ethers.provider.getSigner(GELATO_ADDRESS);
 
     // Deposit ETH on Gelato to pay for transactions via Safe
     const depositAmount = ethers.utils.parseEther("1");
     await user.sendTransaction({ to: avatar.address, value: depositAmount });
-    await user.sendTransaction({ to: GELATO, value: depositAmount });
+    await user.sendTransaction({ to: GELATO_ADDRESS, value: depositAmount });
     await avatar.execTransaction(
       taskTreasury.address,
       depositAmount,
       taskTreasury.interface.encodeFunctionData("depositFunds", [avatar.address, ETH, depositAmount]),
       CALL
     );
-
-    automate = await ethers.getContractAt("IOps", GELATO_AUTOMATE);
   });
 
   it("Whitelist Counter Example on GelatoSafeModule", async () => {
