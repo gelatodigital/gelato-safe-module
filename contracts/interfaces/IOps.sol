@@ -14,6 +14,26 @@ interface IOps {
         bytes[] args;
     }
 
+    event TaskCreated(
+        address indexed taskCreator,
+        address indexed execAddress,
+        bytes execDataOrSelector,
+        ModuleData moduleData,
+        address feeToken,
+        bytes32 indexed taskId
+    );
+
+    event TaskCancelled(bytes32 taskId, address taskCreator);
+
+    event ExecSuccess(
+        uint256 indexed txFee,
+        address indexed feeToken,
+        address indexed execAddress,
+        bytes execData,
+        bytes32 taskId,
+        bool callSuccess
+    );
+
     function createTask(
         address execAddress,
         bytes calldata execDataOrSelector,
